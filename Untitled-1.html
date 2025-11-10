@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🍚 Tiệm Cơm Thần Tốc</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--text);
+        transition: 0.3s ease;
+      }
+      :root {
+        --bg: #111;
+        --text: #f5f5f5;
+        --card: #1b1b1b;
+        --accent: #d4a017;
+      }
+      .light {
+        --bg: #fff;
+        --text: #222;
+        --card: #f0f0f0;
+        --accent: #d4a017;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 25px;
+        background: var(--card);
+        box-shadow: 0 2px 8px #0005;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      .title {
+        font-size: 1.5em;
+        font-weight: bold;
+      }
+      .btn {
+        padding: 8px 14px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        background: var(--accent);
+        color: #000;
+        font-weight: bold;
+        transition: 0.2s;
+      }
+      .btn:hover {
+        opacity: 0.85;
+      }
+      .theme-toggle {
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
+        color: var(--text);
+        margin-left: 8px;
+      }
+      main {
+        padding: 20px;
+        max-width: 800px;
+        margin: auto;
+        text-align: center;
+      }
+      .card {
+        background: var(--card);
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 10px #0004;
+        margin-bottom: 20px;
+        animation: fadeIn 0.6s ease;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Form đánh giá */
+      .review-form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .review-form input,
+      .review-form textarea,
+      .review-form select {
+        border: 1px solid #666;
+        border-radius: 8px;
+        padding: 10px;
+        background: var(--bg);
+        color: var(--text);
+        transition: border 0.3s;
+      }
+      .review-form input:focus,
+      .review-form textarea:focus,
+      .review-form select:focus {
+        border-color: var(--accent);
+        outline: none;
+      }
+      .review {
+        background: linear-gradient(145deg, var(--card), #1a1a1a);
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 12px;
+        box-shadow: 0 4px 10px #0004;
+        text-align: left;
+        animation: fadeIn 0.6s ease;
+      }
+      .review strong {
+        font-size: 1.1em;
+        color: var(--accent);
+      }
+      .stars {
+        color: gold;
+        margin-left: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="title">🍚 Tiệm Cơm Thần Tốc</div>
+      <div>
+        <button id="loginBtn" class="btn">Đăng nhập</button>
+        <button id="registerBtn" class="btn">Đăng ký</button>
+        <button id="themeToggle" class="theme-toggle">🌙</button>
+      </div>
+    </header>
+
+    <main>
+      <div class="card">
+        <h2>Giới thiệu</h2>
+        <p>
+          Bạn là ông chủ duy nhất của <b>Tiệm Cơm Thần Tốc</b> —ở góc hẻm, mọi
+          người ủng hộ cơm của bạn rất nhiều nhưng thay vì đó phải canh quý tử
+          báo của bạn khỏi mấy thằng trộm và nhiều chuyện khác.
+        </p>
+        <p>
+          Game 3D kinh dị phong cách Việt Nam, vừa nấu ăn vừa sống sót giữa nỗi
+          sợ hãi.
+        </p>
+        <button class="btn" onclick="alert('Đợi làm game xong rồi chơi nhé!')">
+          🎮 Tham Gia Ngay
+        </button>
+      </div>
+
+      <!-- Phần Đánh Giá & Góp Ý -->
+      <div class="card" id="reviewSection">
+        <h2>🗣️ Đánh giá & Góp ý</h2>
+        <form id="reviewForm" class="review-form">
+          <input
+            type="text"
+            id="reviewName"
+            placeholder="Tên người chơi"
+            required
+          />
+          <textarea
+            id="reviewText"
+            placeholder="Nhận xét của bạn..."
+            required
+          ></textarea>
+          <label>Đánh giá:</label>
+          <select id="reviewStars" required>
+            <option value="5">⭐⭐⭐⭐⭐ - Tuyệt vời!</option>
+            <option value="4">⭐⭐⭐⭐ - Hay đó</option>
+            <option value="3">⭐⭐⭐ - Tạm ổn</option>
+            <option value="2">⭐⭐ - Cần cải thiện</option>
+            <option value="1">⭐ - Tệ quá</option>
+          </select>
+          <button type="submit" class="btn">✨ Gửi đánh giá</button>
+        </form>
+        <div id="reviewsList"></div>
+      </div>
+    </main>
+
+    <audio
+      id="bgMusic"
+      src="https://cdn.pixabay.com/download/audio/2021/09/30/audio_93a7b8d676.mp3"
+      loop
+      autoplay
+    ></audio>
+
+    <script>
+      // ========== Dark/Light Mode ==========
+      const body = document.body;
+      const themeBtn = document.getElementById("themeToggle");
+      if (localStorage.getItem("theme") === "light")
+        body.classList.add("light");
+      themeBtn.textContent = body.classList.contains("light") ? "☀️" : "🌙";
+      themeBtn.onclick = () => {
+        body.classList.toggle("light");
+        localStorage.setItem(
+          "theme",
+          body.classList.contains("light") ? "light" : "dark"
+        );
+        themeBtn.textContent = body.classList.contains("light") ? "☀️" : "🌙";
+      };
+
+      // ========== Đăng ký / Đăng nhập ==========
+      const loginBtn = document.getElementById("loginBtn");
+      const registerBtn = document.getElementById("registerBtn");
+      let currentUser = localStorage.getItem("currentUser");
+
+      function updateHeader() {
+        if (currentUser) {
+          loginBtn.style.display = registerBtn.style.display = "none";
+          const nameTag = document.createElement("span");
+          nameTag.textContent = "👤 " + currentUser;
+          nameTag.className = "btn";
+          document.querySelector("header div:last-child").prepend(nameTag);
+        }
+      }
+      updateHeader();
+
+      registerBtn.onclick = () => {
+        const user = prompt("Nhập tên tài khoản:");
+        const pass = prompt("Nhập mật khẩu:");
+        if (!user || !pass) return alert("Vui lòng nhập đủ thông tin!");
+        const users = JSON.parse(localStorage.getItem("users") || "[]");
+        if (users.find((u) => u.name === user || u.pass === pass))
+          return alert("Tên hoặc mật khẩu đã được sử dụng!");
+        users.push({ name: user, pass: pass });
+        localStorage.setItem("users", JSON.stringify(users));
+        localStorage.setItem("currentUser", user);
+        currentUser = user;
+        updateHeader();
+        alert("Đăng ký thành công!");
+      };
+
+      loginBtn.onclick = () => {
+        const user = prompt("Tên đăng nhập:");
+        const pass = prompt("Mật khẩu:");
+        const users = JSON.parse(localStorage.getItem("users") || "[]");
+        const found = users.find((u) => u.name === user && u.pass === pass);
+        if (!found) return alert("Sai tài khoản hoặc mật khẩu!");
+        localStorage.setItem("currentUser", user);
+        currentUser = user;
+        updateHeader();
+        alert("Đăng nhập thành công!");
+      };
+
+      // ========== Đánh giá & Góp ý ==========
+      const reviewForm = document.getElementById("reviewForm");
+      const reviewsList = document.getElementById("reviewsList");
+      const reviews = JSON.parse(localStorage.getItem("reviews") || "[]");
+
+      function displayReviews() {
+        reviewsList.innerHTML = "";
+        reviews.forEach((r, i) => {
+          const div = document.createElement("div");
+          div.className = "review";
+          div.style.animationDelay = `${i * 0.05}s`;
+          div.innerHTML = `<strong>${
+            r.name
+          }</strong> <span class="stars">${"⭐".repeat(r.stars)}</span><p>${
+            r.text
+          }</p>`;
+          reviewsList.appendChild(div);
+        });
+      }
+      displayReviews();
+
+      reviewForm.onsubmit = (e) => {
+        e.preventDefault();
+        const name = document.getElementById("reviewName").value.trim();
+        const text = document.getElementById("reviewText").value.trim();
+        const stars = parseInt(document.getElementById("reviewStars").value);
+        if (!name || !text) return;
+        const newReview = { name, text, stars };
+        reviews.push(newReview);
+        localStorage.setItem("reviews", JSON.stringify(reviews));
+        displayReviews();
+        reviewForm.reset();
+        reviewsList.lastElementChild.scrollIntoView({ behavior: "smooth" });
+      };
+
+      // ========== Nhạc nền ==========
+      const bgMusic = document.getElementById("bgMusic");
+      bgMusic.volume = 0.3;
+      document.addEventListener("click", () => bgMusic.play(), { once: true });
+    </script>
+  </body>
+</html>
