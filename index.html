@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tiệm Cơm Thần Tốc</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;700&display=swap");
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Be Vietnam Pro", sans-serif;
+        background-color: #000;
+        color: #f5f5f5;
+        overflow-x: hidden;
+      }
+
+      header {
+        text-align: center;
+        padding: 40px 20px 20px;
+        border-bottom: 2px solid #b71c1c;
+        background: rgba(0, 0, 0, 0.85);
+        box-shadow: 0 0 30px #b71c1c;
+        position: relative;
+      }
+      header h1 {
+        color: #ff4444;
+        font-size: 2.8rem;
+        text-shadow: 0 0 20px #ff0000;
+      }
+      header .auth-buttons {
+        position: absolute;
+        right: 20px;
+        top: 25px;
+      }
+      header button {
+        background: #b71c1c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin-left: 10px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.3s;
+        box-shadow: 0 0 15px #b71c1c;
+      }
+      header button:hover {
+        background: #ff4d4d;
+        box-shadow: 0 0 25px #ff4d4d;
+      }
+
+      section {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 60px 20px;
+        text-align: center;
+        animation: fadeIn 2s ease;
+      }
+      section h2 {
+        color: #ff4444;
+        font-size: 2rem;
+        margin-bottom: 25px;
+        text-shadow: 0 0 10px #ff0000;
+      }
+      section p {
+        color: #ccc;
+        font-size: 1.1rem;
+        line-height: 1.7;
+        margin-bottom: 30px;
+      }
+      .join-btn {
+        background: #b71c1c;
+        color: white;
+        padding: 15px 40px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1.1rem;
+        transition: 0.3s;
+        box-shadow: 0 0 15px #b71c1c;
+      }
+      .join-btn:hover {
+        background: #ff4d4d;
+        box-shadow: 0 0 25px #ff4d4d;
+      }
+      footer {
+        text-align: center;
+        padding: 25px;
+        font-size: 0.9rem;
+        color: #777;
+        border-top: 1px solid #222;
+        background: rgba(0, 0, 0, 0.7);
+      }
+
+      .bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: url("https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1920&q=80")
+          center/cover no-repeat;
+        filter: brightness(25%) blur(2px);
+      }
+
+      /* --- POPUP --- */
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        visibility: hidden;
+        opacity: 0;
+        transition: 0.4s;
+      }
+      .overlay.active {
+        visibility: visible;
+        opacity: 1;
+      }
+      .box {
+        background: rgba(20, 0, 0, 0.9);
+        padding: 40px;
+        border: 2px solid #b71c1c;
+        border-radius: 12px;
+        width: 300px;
+        text-align: center;
+        box-shadow: 0 0 30px #b71c1c;
+        animation: fadeInUp 0.8s ease;
+      }
+      .box h3 {
+        margin-bottom: 20px;
+        color: #ff4444;
+      }
+      .box input {
+        width: 100%;
+        margin-bottom: 15px;
+        padding: 10px;
+        background: #111;
+        border: 1px solid #b71c1c;
+        color: #fff;
+        border-radius: 5px;
+      }
+      .box button {
+        background: #b71c1c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        width: 100%;
+        box-shadow: 0 0 15px #b71c1c;
+        transition: 0.3s;
+      }
+      .box button:hover {
+        background: #ff4d4d;
+      }
+      .toggle-link {
+        color: #ff6666;
+        font-size: 0.9rem;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+      .user-display {
+        color: #ff6666;
+        font-weight: bold;
+        font-size: 1.1rem;
+        text-shadow: 0 0 10px #ff0000;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg"></div>
+
+    <header>
+      <h1>🍚 Tiệm Cơm Thần Tốc 🍚</h1>
+      <div class="auth-buttons" id="authButtons">
+        <button id="loginBtn">Đăng Nhập</button>
+        <button id="registerBtn">Đăng Ký</button>
+      </div>
+      <div id="userDisplay" class="auth-buttons" style="display: none">
+        <span class="user-display" id="currentUser"></span>
+      </div>
+    </header>
+
+    <section id="gioi-thieu">
+      <h2>Giới thiệu</h2>
+      <p>
+        Trong con hẻm nhỏ giữa Sài Gòn, có một tiệm cơm mở cửa suốt đêm. Không
+        nhân viên, không khách quen – chỉ có **ông chủ**, người tự tay nấu từng
+        suất cơm cho những vị khách đến gõ cửa sau nửa đêm...
+      </p>
+      <p>
+        <strong>Tiệm Cơm Thần Tốc</strong> là game kinh dị góc nhìn thứ nhất
+        phong cách Việt Nam, nơi bạn nhập vai ông chủ tiệm cô độc, phục vụ những
+        thực khách không bao giờ rời khỏi cửa hàng như cách họ bước vào.
+      </p>
+    </section>
+
+    <section id="tham-gia">
+      <h2>Tham gia ngay</h2>
+      <p>
+        Hãy trở thành ông chủ duy nhất của “Tiệm Cơm Thần Tốc”. Bạn có thể phục
+        vụ mọi thực khách... hay sẽ trở thành món chính của chính tiệm mình?
+      </p>
+      <a href="#" class="join-btn">🎮 Tham Gia Ngay</a>
+    </section>
+
+    <footer>© 2025 Tiệm Cơm Thần Tốc — Game kinh dị Việt Nam 3D</footer>
+
+    <!-- POPUP LOGIN -->
+    <div class="overlay" id="loginOverlay">
+      <div class="box">
+        <h3>Đăng nhập</h3>
+        <input type="text" id="loginUser" placeholder="Tên người chơi" />
+        <input type="password" id="loginPass" placeholder="Mật khẩu" />
+        <button id="submitLogin">Vào Tiệm</button>
+        <p class="toggle-link" id="toRegister">Chưa có tài khoản? Đăng ký</p>
+      </div>
+    </div>
+
+    <!-- POPUP REGISTER -->
+    <div class="overlay" id="registerOverlay">
+      <div class="box">
+        <h3>Đăng ký</h3>
+        <input type="text" id="regUser" placeholder="Tạo tên người chơi" />
+        <input type="password" id="regPass" placeholder="Tạo mật khẩu" />
+        <button id="submitRegister">Đăng Ký</button>
+        <p class="toggle-link" id="toLogin">Đã có tài khoản? Đăng nhập</p>
+      </div>
+    </div>
+
+    <script>
+      const loginBtn = document.getElementById("loginBtn");
+      const registerBtn = document.getElementById("registerBtn");
+      const loginOverlay = document.getElementById("loginOverlay");
+      const registerOverlay = document.getElementById("registerOverlay");
+      const submitLogin = document.getElementById("submitLogin");
+      const submitRegister = document.getElementById("submitRegister");
+      const toLogin = document.getElementById("toLogin");
+      const toRegister = document.getElementById("toRegister");
+      const authButtons = document.getElementById("authButtons");
+      const userDisplay = document.getElementById("userDisplay");
+      const currentUser = document.getElementById("currentUser");
+
+      // mở popup
+      loginBtn.onclick = () => {
+        loginOverlay.classList.add("active");
+      };
+      registerBtn.onclick = () => {
+        registerOverlay.classList.add("active");
+      };
+
+      // chuyển giữa login và register
+      toLogin.onclick = () => {
+        registerOverlay.classList.remove("active");
+        loginOverlay.classList.add("active");
+      };
+      toRegister.onclick = () => {
+        loginOverlay.classList.remove("active");
+        registerOverlay.classList.add("active");
+      };
+
+      // hiển thị người dùng
+      function showUser(user) {
+        localStorage.setItem("currentUser", user);
+        currentUser.textContent = "👤 Ông Chủ: " + user;
+        authButtons.style.display = "none";
+        userDisplay.style.display = "block";
+        loginOverlay.classList.remove("active");
+        registerOverlay.classList.remove("active");
+      }
+
+      // kiểm tra nếu đã đăng nhập sẵn
+      const savedUser = localStorage.getItem("currentUser");
+      if (savedUser) {
+        showUser(savedUser);
+      }
+
+      // đăng ký
+      submitRegister.onclick = () => {
+        const user = document.getElementById("regUser").value.trim();
+        const pass = document.getElementById("regPass").value.trim();
+
+        if (user === "" || pass === "") {
+          alert("Vui lòng nhập đủ thông tin!");
+        } else if (localStorage.getItem(user)) {
+          alert("Tên người chơi đã tồn tại! Vui lòng chọn tên khác.");
+        } else if (user === pass) {
+          alert("Mật khẩu không được trùng với tên người chơi!");
+        } else {
+          localStorage.setItem(user, pass);
+          alert(
+            "Đăng ký thành công! Chào mừng " + user + " đến Tiệm Cơm Thần Tốc!"
+          );
+          showUser(user);
+        }
+      };
+
+      // đăng nhập
+      submitLogin.onclick = () => {
+        const user = document.getElementById("loginUser").value.trim();
+        const pass = document.getElementById("loginPass").value.trim();
+        const savedPass = localStorage.getItem(user);
+
+        if (!savedPass) {
+          alert("Tài khoản không tồn tại!");
+        } else if (pass !== savedPass) {
+          alert("Sai mật khẩu!");
+        } else {
+          alert("Chào mừng " + user + " quay lại Tiệm Cơm Thần Tốc!");
+          showUser(user);
+        }
+      };
+
+      // đóng popup khi click ra ngoài
+      [loginOverlay, registerOverlay].forEach((overlay) => {
+        overlay.addEventListener("click", (e) => {
+          if (e.target === overlay) overlay.classList.remove("active");
+        });
+      });
+    </script>
+  </body>
+</html>
